@@ -49,9 +49,18 @@ public class Controller : MonoBehaviour
     public void InitAdjacencyLists()
     {
         //Matriz de adyacencia
-        int[,] matriu = new int[Constants.NumTiles, Constants.NumTiles];
+        // Cambio esto porque creo que la matriz deberia estar formada por 8 filas y 8 columnas -> Constants.NumTiles = 64 -> nos saldria una matriz de 4096 casillas
+        // int[,] matriu = new int[Constants.NumTiles, Constants.NumTiles];
+        int[,] matriu = new int[Constants.TilesPerRow, Constants.TilesPerRow];
 
         //TODO: Inicializar matriz a 0's
+        // Creamos un primer bucle para reccorer cada fila de la matriz
+        for (int i = 0; i<Constants.TilesPerRow; j++) {
+            // Ahora, dentro de cada fila, creamos otro para recorrer todas las columnas que tiene
+            for (int j = 0; j<Constants.TilesPerRow; j++) {
+                matriu[i, j] = 0;
+            }
+        }
 
         //TODO: Para cada posición, rellenar con 1's las casillas adyacentes (arriba, abajo, izquierda y derecha)
 
