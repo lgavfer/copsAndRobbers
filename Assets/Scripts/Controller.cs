@@ -117,11 +117,53 @@ public class Controller : MonoBehaviour
                 }
             }
         }
+
         // Muestro por pantalla las matrices para ver si se ha hecho bien
         PrintAdjacencyMatrix(matriu);
     
 
         //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
+                for (int i = 0; i < Constants.TilesPerRow; i++)
+            {
+                for (int j = 0; j < Constants.TilesPerRow; j++)
+                {
+                    int tileIndex = i * Constants.TilesPerRow + j;
+                    tiles[tileIndex].adjacency = new List<int>();
+
+                    int currentTileIndex = i * Constants.TilesPerRow + j;
+
+                    // Comprobar casilla de arriba
+                    if (i > 0)
+                    {
+                        int aboveTileIndex = (i - 1) * Constants.TilesPerRow + j;
+                        tiles[tileIndex].adjacency.Add(aboveTileIndex);
+                    }
+
+                    // Comprobar casilla de abajo
+                    if (i < Constants.TilesPerRow - 1)
+                    {
+                        int belowTileIndex = (i + 1) * Constants.TilesPerRow + j;
+                        tiles[tileIndex].adjacency.Add(belowTileIndex);
+                    }
+
+                    // Comprobar casilla de la izquierda
+                    if (j > 0)
+                    {
+                        int leftTileIndex = i * Constants.TilesPerRow + (j - 1);
+                        tiles[tileIndex].adjacency.Add(leftTileIndex);
+                    }
+
+                    // Comprobar casilla de la derecha
+                    if (j < Constants.TilesPerRow - 1)
+                    {
+                        int rightTileIndex = i * Constants.TilesPerRow + (j + 1);
+                        tiles[tileIndex].adjacency.Add(rightTileIndex);
+                    }
+                }
+            }   
+        // Muestro por pantalla para ver si funciona -> tiene que devolverme un array con los indices de las adyacentes de la casilla 1
+        Debug.Log("Adj: " + string.Join(", ", tiles[1].adjacency));
+        PrintAdjacencyMatrix(matriu);
 
 
     }
