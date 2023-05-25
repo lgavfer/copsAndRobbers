@@ -46,27 +46,50 @@ public class Controller : MonoBehaviour
         robber.GetComponent<RobberMove>().currentTile=Constants.InitialRobber;           
     }
 
+    // Para mostrar por pantalla la matriz
+    public void PrintAdjacencyMatrix(int[,] adjacencyMatrix)
+    {
+        int numRows = adjacencyMatrix.GetLength(0);
+        int numCols = adjacencyMatrix.GetLength(1);
+
+        for (int row = 0; row < numRows; row++)
+        {
+            string rowString = "";
+            for (int col = 0; col < numCols; col++)
+            {
+                int value = adjacencyMatrix[row, col];
+                rowString += value + " ";
+            }
+            Debug.Log(rowString);
+        }
+    }
+
     public void InitAdjacencyLists()
     {
         //Matriz de adyacencia
-        // Cambio esto porque creo que la matriz deberia estar formada por 8 filas y 8 columnas -> Constants.NumTiles = 64 -> nos saldria una matriz de 4096 casillas
-        // int[,] matriu = new int[Constants.NumTiles, Constants.NumTiles];
-        int[,] matriu = new int[Constants.TilesPerRow, Constants.TilesPerRow];
+        int[,] matriu = new int[Constants.NumTiles, Constants.NumTiles];
 
         //TODO: Inicializar matriz a 0's
         // Creamos un primer bucle para reccorer cada fila de la matriz
-        for (int i = 0; i<Constants.TilesPerRow; j++) {
+        for (int i = 0; i<Constants.TilesPerRow; i++) {
             // Ahora, dentro de cada fila, creamos otro para recorrer todas las columnas que tiene
             for (int j = 0; j<Constants.TilesPerRow; j++) {
                 matriu[i, j] = 0;
             }
         }
 
-        //TODO: Para cada posición, rellenar con 1's las casillas adyacentes (arriba, abajo, izquierda y derecha)
+        PrintAdjacencyMatrix(matriu);
+    
+
+
+    
 
         //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
+        
 
     }
+
+
 
     //Reseteamos cada casilla: color, padre, distancia y visitada
     public void ResetTiles()
