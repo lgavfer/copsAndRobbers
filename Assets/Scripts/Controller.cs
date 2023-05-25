@@ -78,7 +78,7 @@ public class Controller : MonoBehaviour
             }
         }
 
-        PrintAdjacencyMatrix(matriu);
+        // PrintAdjacencyMatrix(matriu);
     
 
         //TODO: Para cada posición, rellenar con 1's las casillas adyacentes (arriba, abajo, izquierda y derecha)
@@ -119,7 +119,7 @@ public class Controller : MonoBehaviour
         }
 
         // Muestro por pantalla las matrices para ver si se ha hecho bien
-        PrintAdjacencyMatrix(matriu);
+        // PrintAdjacencyMatrix(matriu);
     
 
         //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
@@ -161,9 +161,10 @@ public class Controller : MonoBehaviour
                     }
                 }
             }   
+
         // Muestro por pantalla para ver si funciona -> tiene que devolverme un array con los indices de las adyacentes de la casilla 1
-        Debug.Log("Adj: " + string.Join(", ", tiles[1].adjacency));
-        PrintAdjacencyMatrix(matriu);
+        Debug.Log("Adyacentes de la casilla 1: " + string.Join(", ", tiles[1].adjacency));
+        // PrintAdjacencyMatrix(matriu);
 
 
     }
@@ -299,26 +300,45 @@ public class Controller : MonoBehaviour
 
     public void FindSelectableTiles(bool cop)
     {
-                 
+        // Indice de la posicion donde esta la pieza ahora
         int indexcurrentTile;        
 
+        // Si se trata de un policia
         if (cop==true)
             indexcurrentTile = cops[clickedCop].GetComponent<CopMove>().currentTile;
+        // Si no es un policia sera un ladron
         else
             indexcurrentTile = robber.GetComponent<RobberMove>().currentTile;
 
         //La ponemos rosa porque acabamos de hacer un reset
         tiles[indexcurrentTile].current = true;
+        Debug.Log("Index " + indexcurrentTile);
 
         //Cola para el BFS
         Queue<Tile> nodes = new Queue<Tile>();
 
         //TODO: Implementar BFS. Los nodos seleccionables los ponemos como selectable=true
-        //Tendrás que cambiar este código por el BFS
-        for(int i = 0; i < Constants.NumTiles; i++)
+        //Tendras que cambiar este codigo por el BFS
+
+        // Obtenemos la matriz de las posiciones adyacentes a la posicion actual
+        List<int> CurrentAdjacencyList = tiles[indexcurrentTile].adjacency;
+        Debug.Log("Current Adjacency " + string.Join(", ", CurrentAdjacencyList));
+
+        // Matriz de adyacencia incializada con 0 en todos los valores
+        int[,] CurrentAdjacencyMatrix = new int[Constants.NumTiles, Constants.NumTiles];
+
+        // Le damos los valores correspondientes en funcion de las adyacencias calculadas antes
+        for(int i = 0; i<CurrentAdjacencyList.Count; i++) {
+            CurrentAdjacencyMatrix[indexcurrentTile, CurrentAdjacencyList[i]] = 1;
+        }
+
+        PrintAdjacencyMatrix(CurrentAdjacencyMatrix); 
+
+        // Venia con el archivo
+        /*for(int i = 0; i < Constants.NumTiles; i++)
         {
             tiles[i].selectable = true;
-        }
+        }*/
 
 
     }
