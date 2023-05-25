@@ -81,11 +81,48 @@ public class Controller : MonoBehaviour
         PrintAdjacencyMatrix(matriu);
     
 
+        //TODO: Para cada posición, rellenar con 1's las casillas adyacentes (arriba, abajo, izquierda y derecha)
+        for (int i = 0; i < Constants.TilesPerRow; i++)
+        {
+            for (int j = 0; j < Constants.TilesPerRow; j++)
+            {
+                int currentTileIndex = i * Constants.TilesPerRow + j;
 
+                // Comprobar casilla de arriba
+                if (i> 0)
+                {
+                    int aboveTileIndex = (i - 1) * Constants.TilesPerRow + j;
+                    matriu[currentTileIndex, aboveTileIndex] = 1;
+                }
+
+                // Comprobar casilla de abajo
+                if (i < Constants.TilesPerRow - 1)
+                {
+                    int belowTileIndex = (i+ 1) * Constants.TilesPerRow + j;
+                    matriu[currentTileIndex, belowTileIndex] = 1;
+                }
+
+                // Comprobar casilla de la izquierda
+                if (j > 0)
+                {
+                    int leftTileIndex = i * Constants.TilesPerRow + (j - 1);
+                    matriu[currentTileIndex, leftTileIndex] = 1;
+                }
+
+                // Comprobar casilla de la derecha
+                if (j < Constants.TilesPerRow - 1)
+                {
+                    int rightTileIndex = i * Constants.TilesPerRow + (j + 1);
+                    matriu[currentTileIndex, rightTileIndex] = 1;
+                }
+            }
+        }
+        // Muestro por pantalla las matrices para ver si se ha hecho bien
+        PrintAdjacencyMatrix(matriu);
     
 
         //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
-        
+
 
     }
 
