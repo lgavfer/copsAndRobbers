@@ -123,12 +123,12 @@ public class Controller : MonoBehaviour
     
 
         //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
-                for (int i = 0; i < Constants.TilesPerRow; i++)
+            for (int i = 0; i < Constants.TilesPerRow; i++)
             {
                 for (int j = 0; j < Constants.TilesPerRow; j++)
                 {
                     int tileIndex = i * Constants.TilesPerRow + j;
-                    tiles[tileIndex].adjacency = new List<int>();
+                    // tiles[tileIndex].adjacency = new List<int>();
 
                     int currentTileIndex = i * Constants.TilesPerRow + j;
 
@@ -324,22 +324,28 @@ public class Controller : MonoBehaviour
         List<int> CurrentAdjacencyList = tiles[indexcurrentTile].adjacency;
         Debug.Log("Current Adjacency " + string.Join(", ", CurrentAdjacencyList));
 
-        // Matriz de adyacencia incializada con 0 en todos los valores
-        int[,] CurrentAdjacencyMatrix = new int[Constants.NumTiles, Constants.NumTiles];
+        // Reseteamos todas las casillas para poder marcarlas como selectable
+        ResetTiles();
 
-        // Le damos los valores correspondientes en funcion de las adyacencias calculadas antes
+        // Marcamos las teclas seleccionadas
         for(int i = 0; i<CurrentAdjacencyList.Count; i++) {
-            CurrentAdjacencyMatrix[indexcurrentTile, CurrentAdjacencyList[i]] = 1;
+            tiles[CurrentAdjacencyList[i]].selectable = true;
         }
 
-        PrintAdjacencyMatrix(CurrentAdjacencyMatrix); 
+        // Ahora que ya tengo la primera fila de casillas posibles marcadas, buscamos la siguiente
+        for(int i = 0; i<CurrentAdjacencyList.Count; i++){
+            List<int> auxAdjencyList = tiles[CurrentAdjacencyList[i]].adjacency;
+            for(int m = 0; m < auxAdjencyList.Count; m++){
+                    tiles[auxAdjencyList[m]].selectable = true;
+            }
+        }
 
-        // Venia con el archivo
-        /*for(int i = 0; i < Constants.NumTiles; i++)
-        {
-            tiles[i].selectable = true;
-        }*/
+        // Marcamos la casilla en la que estamos somo current y le impedimos que pueda volver a seleccionarla.
+        tiles[indexcurrentTile].current = true;
+        tiles[indexcurrentTile].selectable = false;
 
+        
+    
 
     }
     
