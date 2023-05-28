@@ -344,12 +344,54 @@ public class Controller : MonoBehaviour
         tiles[indexcurrentTile].current = true;
         tiles[indexcurrentTile].selectable = false;
 
-        
-    
+        // Vamos a hacer que mi policia no pueda atravesar a otro para pasar
 
-    }
-    
+        // Obtenemos la ubicacion del otro/otros policias
+        int indexOtherCop = 0;
+        // Si he clickado sobre el primer policia, quiero seleccionar el otro; y viceversa
+        if(cops[clickedCop] == cops[0]) {
+            indexOtherCop = cops[1].GetComponent<CopMove>().currentTile;
+        } 
+        if(cops[clickedCop] == cops[1]) {
+            indexOtherCop = cops[0].GetComponent<CopMove>().currentTile;
+        }
+
+        // Una vez tengo la posicion del segundo policia -> quito de seleccionables las casillas que esten en la trayectoria
+
+        // Compruebo primero que no este en la primera tanda de casillas seleccionables
+        for(int i = 0; i<CurrentAdjacencyList.Count; i++) {
+            if(CurrentAdjacencyList[i] == indexOtherCop) {
+                tiles[CurrentAdjacencyList[i]].selectable = false;
+                // Hacemos qe no pueda saltar al otro policia para pasar, no solo que no pueda ir a donde se encuentra la segunda pieza
+                // Primero vemos si esta en la derecha
+                if(indexcurrentTile == indexOtherCop+1) {
+                    tiles[indexcurrentTile-2].selectable = false;
+                }
+                // Vemos si está a la izquierda
+                if(indexcurrentTile == indexOtherCop-1) {
+                    tiles[indexcurrentTile+2].selectable = false;
+                }
+                // Vemos si esta arriba
+                if(indexcurrentTile == indexOtherCop+8) {
+                    tiles[indexcurrentTile-16].selectable = false;
+                }
+                // Vemos si esta abajo
+                if(indexcurrentTile == indexOtherCop-8) {
+                    tiles[indexcurrentTile+16].selectable = false;
+                }
+            }     
    
+            else {
+                tiles[indexOtherCop].selectable = false;
+            }
+                
+             
+        }
+         
+    
+  
+    }
+
     
 
     
