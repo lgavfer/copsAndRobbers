@@ -257,7 +257,27 @@ public class Controller : MonoBehaviour
         - Movemos al caco a esa casilla
         - Actualizamos la variable currentTile del caco a la nueva casilla
         */
-        robber.GetComponent<RobberMove>().MoveToTile(tiles[robber.GetComponent<RobberMove>().currentTile]);
+
+        // Hacemos una lista con las casillas a las que puede ir -> las seleccionables segun su posicion
+        List<int> selectableTiles = new List<int> ();
+        for(int i = 0; i<64; i++) {
+            if(tiles[i].selectable) {
+                selectableTiles.Add(tiles[i].numTile);
+            }
+        }
+
+        // Elegimos una de forma aleatoria -> de nuestra lista
+        System.Random random = new System.Random();
+        // Genera un índice aleatorio dentro del rango de la lista
+        int index = random.Next(selectableTiles.Count);  
+        int randomTile = selectableTiles[index];
+
+        // Movemos la pieza a la casilla aleatoria    
+        robber.GetComponent<RobberMove>().MoveToTile(tiles[randomTile]);
+
+        // Cambiamos el currenTile del ladron
+        robber.GetComponent<RobberMove>().currentTile = randomTile; 
+        
     }
 
     public void EndGame(bool end)
@@ -357,11 +377,16 @@ public class Controller : MonoBehaviour
         }
 
         // Una vez tengo la posicion del segundo policia -> quito de seleccionables las casillas que esten en la trayectoria
-
+        
+        // Creamos una variable para que si el otro policia no se encuentra en las primeras adyacentes a nuestro policia actual, marquemos como no seleccionable
+        bool encontrada = false;
         // Compruebo primero que no este en la primera tanda de casillas seleccionables
         for(int i = 0; i<CurrentAdjacencyList.Count; i++) {
             if(CurrentAdjacencyList[i] == indexOtherCop) {
                 tiles[CurrentAdjacencyList[i]].selectable = false;
+                // Sabemos que el otro policia esta en alguna de las cuatro adyacentes a nuestro poli
+                encontrada = true;
+
                 // Hacemos qe no pueda saltar al otro policia para pasar, no solo que no pueda ir a donde se encuentra la segunda pieza
                 // Primero vemos si esta en la derecha
                 if(indexcurrentTile == indexOtherCop+1) {
@@ -380,14 +405,13 @@ public class Controller : MonoBehaviour
                     tiles[indexcurrentTile+16].selectable = false;
                 }
             }     
-   
-            else {
-                tiles[indexOtherCop].selectable = false;
-            }
-                
-             
+     
         }
-         
+        // Si no hemos encontrado nuestra pieza entre las cuatro adyacentes, nos da igual porque no va a interrumpir ningun camino
+        // Pero en cualquier caso, no m epuedo mover a donde este situado el otro policia para que no se solapen las fichas
+        if(!encontrada) {
+            tiles[indexOtherCop].selectable = false;
+        }
     
   
     }
